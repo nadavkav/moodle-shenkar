@@ -113,7 +113,7 @@ function process_urls($string)
 //    // IE can not embed stuff properly if stored on different server
 //    // that is why we use iframe instead, unfortunately this tag does not validate
 //    // in xhtml strict mode
-//    if ($mimetype === 'text/html' and check_browser_version('MSIE', 5)) {
+//    if ($mimetype === 'text/html' and core_useragent::is_ie()) {
 //        // The param tag needs to be removed to avoid trouble in IE.
 //        $param = '';
 //        if (preg_match('(^https?://[^/]*)', $fullurl, $matches)) {
@@ -123,7 +123,7 @@ function process_urls($string)
 //        }
 //    }
 //
-//    if (check_browser_version('Chrome')) {
+//    if (core_useragent::is_chrome()) {
 //        $iframe = true;
 //    }
 //
@@ -171,17 +171,12 @@ function tab_embed_general($fullurl, $title, $clicktoopen, $mimetype)
     // IE can not embed stuff properly if stored on different server
     // that is why we use iframe instead, unfortunately this tag does not validate
     // in xhtml strict mode
-    if ($mimetype === 'text/html' and check_browser_version('MSIE', 5))
-    {
-        if (preg_match('(^https?://[^/]*)', $fullurl, $matches))
-        {
+    if ($mimetype === 'text/html' and core_useragent::is_ie()) {
+        if (preg_match('(^https?://[^/]*)', $fullurl, $matches)) {
             //make sure we aren't redirecting to a moodle page
-            if (strpos($CFG->wwwroot, $matches[0]) !== 0)
-            {
+            if (strpos($CFG->wwwroot, $matches[0]) !== 0) {
                 $force_link = true;
-            }
-            else
-            { //if it is a moodle then embed as iframe
+            } else { //if it is a moodle then embed as iframe
                 $iframe = true;
             }
         }
