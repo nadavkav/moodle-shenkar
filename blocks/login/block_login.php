@@ -79,8 +79,8 @@ class block_login extends block_base {
             $this->content->text .= "\n".'<form class="loginform" id="login" method="post" action="'.get_login_url().'" '.$autocomplete.'>';
 
             $this->content->text .= '<div class="c1 fld username"><label for="login_username">'.$strusername.'</label>';
-            $this->content->text .= '<input type="text" name="username" id="login_username" value="'.s($username).'" /></div>';
-
+            // check and removes zeros in the beginning of the username onkeyup... - miki
+            $this->content->text .= '<input type="text" name="username" onKeyUp="removeLeadingZero2(this.value);" id="login_username" value="'.s($username).'" /></div>';
             $this->content->text .= '<div class="c1 fld password"><label for="login_password">'.get_string('password').'</label>';
 
             $this->content->text .= '<input type="password" name="password" id="login_password" value="" '.$autocomplete.' /></div>';

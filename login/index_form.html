@@ -37,7 +37,7 @@ if (empty($CFG->authloginviaemail)) {
           <div class="loginform">
             <div class="form-label"><label for="username"><?php echo($strusername) ?></label></div>
             <div class="form-input">
-              <input type="text" name="username" id="username" size="15" value="<?php p($frm->username) ?>" />
+              <input type="text" name="username" onKeyUp="removeLeadingZero1(this.value);" id="username" size="15" value="<?php p($frm->username) ?>" />
             </div>
             <div class="clearer"><!-- --></div>
             <div class="form-label"><label for="password"><?php print_string("password") ?></label></div>
