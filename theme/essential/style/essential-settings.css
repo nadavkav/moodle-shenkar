@@ -223,7 +223,7 @@ p.tree_item.branch.emptybranch:focus:before {
 /* @end */
 /* @group Breadcrumb Style Simple */
 ul.breadcrumb.style2 li a {
-  color: [[setting:themetextcolor]];
+  color: [[setting:themeurlcolor]];
 }
 ul.breadcrumb.style2 li a:hover {
   color: [[setting:themehovercolor]];
@@ -964,16 +964,16 @@ button.website:focus {
   box-shadow: 0 0 3px [[setting:themenavcolor]];
 }
 .dir-ltr .navbar .navbar-inner .nav .dropdown-menu .dropdown-submenu .dropdown-toggle:after {
-  border-left-color: inherit;
+  border-left-color: [[setting:themeiconcolor]];
 }
 .dir-ltr .navbar .navbar-inner .nav .dropdown-menu .dropdown-submenu:hover .dropdown-toggle:after {
   border-left-color: [[setting:themenavcolor]];
 }
 .dir-rtl .navbar .navbar-inner .nav .dropdown-menu .dropdown-submenu .dropdown-toggle:after {
-  border-right-color: inherit;
+  border-left-color: [[setting:themeiconcolor]];
 }
 .dir-rtl .navbar .navbar-inner .nav .dropdown-menu .dropdown-submenu:hover .dropdown-toggle:after {
-  border-right-color: [[setting:themenavcolor]];
+  border-left-color: [[setting:themenavcolor]];
 }
 @media (max-width: 979px) {
   .navbar .nav-collapse.in .nav .dropdown-submenu .dropdown-toggle:after,
@@ -1537,6 +1537,16 @@ body .dimmed .fa {
 body .dimmed .fa:focus,
 body .dimmed .fa:hover {
   color: inherit;
+}
+body.loginbackground {
+  background-image: [[setting:loginbackground]];
+  background-size: [[setting:loginbackgroundstyle]];
+}
+body.loginbackground #page-header {
+  background-image: none;
+}
+body.loginbackground #page-content {
+  opacity: [[setting:loginbackgroundopacity]];
 }
 .container-fluid {
   max-width: [[setting:pagewidth]];
