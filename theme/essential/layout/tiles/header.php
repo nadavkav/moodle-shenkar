@@ -26,6 +26,22 @@
 
 require_once(\theme_essential\toolbox::get_tile_file('pagesettings'));
 
+// Get topmost user's role for this page (context)
+// And add a user's role class to body classes.
+$userrole = ' role-teacher';
+$isstudent = false;
+$userroles = get_user_roles($PAGE->context, $USER->id, true);
+foreach ($userroles as $role) {
+    if ($role->roleid == 5) $isstudent = true;
+}
+if ($isstudent) {
+    $userrole = ' role-student';
+}
+if (has_capability('moodle/site:config', context_system::instance())) {
+    $userrole = ' role-admin';
+}
+array_push($bodyclasses, $userrole);
+
 echo $OUTPUT->doctype();
 ?>
 <html <?php echo $OUTPUT->htmlattributes(); ?> class="no-js">
@@ -81,61 +97,7 @@ if (!$haslogo) {
 }
 ?>
                 </div>
-                <?php if ($hassocialnetworks || $hasmobileapps) { ?>
-                <a class="btn btn-icon collapsed" data-toggle="collapse" data-target="#essentialicons">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-
-                <div id='essentialicons' class="collapse pull-<?php echo ($left) ? 'right' : 'left'; ?>">
-<?php
-}
-// If true, displays the heading and available social links; displays nothing if false.
-if ($hassocialnetworks) {
-?>
-                        <div class="pull-<?php echo ($left) ? 'right' : 'left'; ?>" id="socialnetworks">
-                            <p id="socialheading"><?php echo get_string('socialnetworks', 'theme_essential') ?></p>
-                            <ul class="socials unstyled">
-                                <?php
-                                echo $OUTPUT->render_social_network('googleplus');
-                                echo $OUTPUT->render_social_network('twitter');
-                                echo $OUTPUT->render_social_network('facebook');
-                                echo $OUTPUT->render_social_network('linkedin');
-                                echo $OUTPUT->render_social_network('youtube');
-                                echo $OUTPUT->render_social_network('flickr');
-                                echo $OUTPUT->render_social_network('pinterest');
-                                echo $OUTPUT->render_social_network('instagram');
-                                echo $OUTPUT->render_social_network('vk');
-                                echo $OUTPUT->render_social_network('skype');
-                                echo $OUTPUT->render_social_network('website');
-                                ?>
-                            </ul>
-                        </div>
-                    <?php
-}
-                    // If true, displays the heading and available social links; displays nothing if false.
-if ($hasmobileapps) { ?>
-                        <div class="pull-<?php echo ($left) ? 'right' : 'left'; ?>" id="mobileapps">
-                            <p id="socialheading"><?php echo get_string('mobileappsheading', 'theme_essential') ?></p>
-                            <ul class="socials unstyled">
-                                <?php
-                                echo $OUTPUT->render_social_network('ios');
-                                echo $OUTPUT->render_social_network('android');
-                                echo $OUTPUT->render_social_network('winphone');
-                                echo $OUTPUT->render_social_network('windows');
-                                ?>
-                            </ul>
-                        </div>
-                    <?php
-}
-if ($hassocialnetworks || $hasmobileapps) {
-?>
-                </div>
-<?php
-}
-?>
+                <!-- Was social links, mov to footer (nadavkav) -->
             </div>
         </div>
     </div>
