@@ -152,9 +152,10 @@ $string['pagebackground'] = 'Page background image';
 $string['pagebackgrounddesc'] = 'Upload your own background image.  Select the style of the image below.';
 $string['pagebackgroundstyle'] = 'Page background style';
 $string['pagebackgroundstyledesc'] = 'Select the style for the uploaded image.';
+$string['stylecover'] = 'Cover';
 $string['stylefixed'] = 'Fixed';
-$string['styletiled'] = 'Tiled';
 $string['stylestretch'] = 'Stretch';
+$string['styletiled'] = 'Tiled';
 
 $string['pagetopblocksperrow'] = 'Page top blocks per row';
 $string['pagetopblocksperrowdesc'] = 'State up to how many blocks per row between {$a->lower} and {$a->upper} for pages with \'Page top blocks\'.  Current pages are: Admin, Course, Course Category, Dashboard, Frontpage, My Public.';
@@ -290,6 +291,13 @@ $string['returntosectionfeaturedesc'] = "Enable return to section feature within
 
 $string['returntosectiontextlimitfeature'] = 'Return to section name text limit';
 $string['returntosectiontextlimitfeaturedesc'] = 'Length limit for the \'name\' of the section on the button between {$a->lower} and {$a->upper} characters.';
+
+$string['loginbackground'] = 'Login background image';
+$string['loginbackgrounddesc'] = 'Upload your own login background image.  Select the style of the image below.';
+$string['loginbackgroundstyle'] = 'Login background style';
+$string['loginbackgroundstyledesc'] = 'Select the style for the uploaded image.';
+$string['loginbackgroundopacity'] = 'Login box background opacity when there is a background image';
+$string['loginbackgroundopacitydesc'] = 'Lofin background opacity for the login box when there is a background image.';
 
 // Colours.
 $string['colorheading'] = 'Colour';
@@ -880,3 +888,35 @@ $string['findcoursecontent'] = 'Course content: ';
 $string['asconfigintlower'] = '{$a->value} is less than the lower range limit of {$a->lower}';
 $string['asconfigintupper'] = '{$a->value} is greater than the upper range limit of {$a->upper}';
 $string['asconfigintnan'] = '{$a->value} is not a number';
+
+/// Renderer - course filter
+$string['showallcourses'] = 'Show all courses';
+$string['anyrole'] = 'Any role';
+$string['filterby'] = 'Filter by: ';
+$string['filterbycategory'] = 'Category';
+$string['filterbyrole'] = 'Role';
+$string['defaultcoursecategroy'] = 'Default Course Category';
+$string['defaultcoursecategroydescription'] = 'Default Course Category for the My Courses Course Filter chooser';
+$string['showonlytopcategories'] = 'Show only top Categories';
+$string['showonlytopcategoriesdescription'] = 'Show only top Categories, on the Category filter chooser';
+$string['navshowallcourses'] = 'Show all courses';
+$string['confignavshowallcourses'] = 'This setting determines whether users who are enrolled in courses can see Courses (listing all courses) in the navigation, in addition to My Courses (listing courses in which they are enrolled).';
+$string['sortcoursesbylastaccess'] = 'Sort courses';
+$string['sortcoursesbylastaccessdescription'] = "Sort courses by user's lastaccess time";
+$string['filterbysemester'] = 'Semester';
+$string['semesterlist'] = 'סמסטר א,סמסטר ב,סמסטר קיץ,שנתי';
+$string['semesterlistkeys'] = 'א,ב,ק,ש';
+$string['my'] = 'My';
+$string['filtercourses'] = 'Filter courses';
+$string['filtercourses_desc'] = 'Filter courses on user\'s Dashboard page';
+$string['sortbylastaccess'] = 'Sort by lastaccess';
+$string['sortbyabc'] = 'Sort by ABC';
+$string['timetabletitle'] = 'Time table';
+$string['syllabus'] = 'Syllabus';
+$string['moreinfo'] = 'More info';
+$string['mytimetable'] = 'Time table';
+$string['chooseyear'] = 'Choose year';
+$string['nosyllabus'] = 'No syllabus for this course (Please ask the teacher to add it)';
+$string['syllabus'] = 'Syllabus';
+$string['mytimetable'] = 'My Timetable';
+$string['noclasses'] = 'No information available, please ask your teachers for updates.';
