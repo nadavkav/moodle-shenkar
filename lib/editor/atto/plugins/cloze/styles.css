@@ -1,0 +1,30 @@
+.atto_cloze_col0 {
+    float: left;
+    padding-right: 2em;
+    width: 25%;
+}
+
+.atto_cloze_answers {
+    height: 300px;
+    overflow: auto;
+}
+
+.atto_cloze_qtype {
+    overflow: auto;
+    position: relative;
+}
+
+.atto_cloze_qtype .atto_cloze_summary {
+    display: none;
+    left: 175px;
+    position: absolute;
+    top: 0;
+}
+
+.atto_cloze_qtype input[type="radio"]:checked+label .atto_cloze_summary {
+    display: inline;
+}
+
+input.atto_cloze_marks {
+    width: 4em;
+}
