@@ -15,19 +15,18 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the calculated question type.
- *
- * @package    qbehaviour
- * @subpackage manualgraded
- * @copyright  2011 The Open University
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package   qbehaviour_adaptive_adapted_for_coderunner
+ * @copyright Richard Lobb, The University of Canterbury, New Zealand.
+ * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qbehaviour_manualgraded';
-$plugin->version   = 2017051500;
+$plugin->version  = 2017052600;
+$plugin->requires = 2013051400;
+$plugin->cron = 0;
+$plugin->component = 'qbehaviour_adaptive_adapted_for_coderunner';
+$plugin->maturity = MATURITY_STABLE;
+$plugin->release = '1.3.3';
 
-$plugin->requires  = 2017050500;
-
-$plugin->maturity  = MATURITY_STABLE;
+$plugin->dependencies = array();

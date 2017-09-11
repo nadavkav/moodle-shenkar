@@ -15,19 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the calculated question type.
+ * Question behaviour type for adaptive_adapted_for_coderunner behaviour.
  *
- * @package    qbehaviour
- * @subpackage manualgraded
- * @copyright  2011 The Open University
+ * @package    qbehaviour_adaptive_adapted_for_coderunner
+ * @copyright  2014 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->component = 'qbehaviour_manualgraded';
-$plugin->version   = 2017051500;
 
-$plugin->requires  = 2017050500;
-
-$plugin->maturity  = MATURITY_STABLE;
+/**
+ * Question behaviour type information for adaptive behaviour.
+ *
+ * @copyright  2014 Richard Lobb
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class qbehaviour_adaptive_adapted_for_coderunner_type extends qbehaviour_adaptive_type {
+    public function is_archetypal() {
+        return false;
+    }
+}

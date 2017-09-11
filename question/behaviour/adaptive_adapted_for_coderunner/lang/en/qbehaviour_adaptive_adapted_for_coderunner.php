@@ -15,19 +15,17 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Version information for the calculated question type.
+ * Strings for component 'qbehaviour_interactive_adapted_for_coderunner', language 'en'.
  *
  * @package    qbehaviour
- * @subpackage manualgraded
- * @copyright  2011 The Open University
+ * @subpackage interactive
+ * @copyright  2009 The Open University/2011-2016 Richard Lobb
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
-$plugin->component = 'qbehaviour_manualgraded';
-$plugin->version   = 2017051500;
-
-$plugin->requires  = 2017050500;
-
-$plugin->maturity  = MATURITY_STABLE;
+$string['notcomplete'] = 'Not complete';
+$string['pluginname'] = 'Adaptive adapted for coderunner';
+$string['precheck'] = 'Precheck';
+$string['precheckedresponse'] = 'Prechecked: {$a}';
+$string['triesremaining'] = 'Tries remaining: {$a}';
+$string['tryagain'] = 'Try again';
