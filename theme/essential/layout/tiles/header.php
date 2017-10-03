@@ -87,61 +87,7 @@ if (!$haslogo) {
 }
 ?>
                 </div>
-                <?php if ($hassocialnetworks || $hasmobileapps) { ?>
-                <a class="btn btn-icon collapsed" data-toggle="collapse" data-target="#essentialicons">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-
-                <div id='essentialicons' class="collapse pull-right">
-<?php
-}
-// If true, displays the heading and available social links; displays nothing if false.
-if ($hassocialnetworks) {
-?>
-                        <div class="pull-right" id="socialnetworks">
-                            <p class="socialheading"><?php echo get_string('socialnetworks', 'theme_essential') ?></p>
-                            <ul class="socials unstyled">
-                                <?php
-                                echo $OUTPUT->render_social_network('googleplus');
-                                echo $OUTPUT->render_social_network('twitter');
-                                echo $OUTPUT->render_social_network('facebook');
-                                echo $OUTPUT->render_social_network('linkedin');
-                                echo $OUTPUT->render_social_network('youtube');
-                                echo $OUTPUT->render_social_network('flickr');
-                                echo $OUTPUT->render_social_network('pinterest');
-                                echo $OUTPUT->render_social_network('instagram');
-                                echo $OUTPUT->render_social_network('vk');
-                                echo $OUTPUT->render_social_network('skype');
-                                echo $OUTPUT->render_social_network('website');
-                                ?>
-                            </ul>
-                        </div>
-                    <?php
-}
-                    // If true, displays the heading and available social links; displays nothing if false.
-if ($hasmobileapps) { ?>
-                        <div class="pull-right" id="mobileapps">
-                            <p class="socialheading"><?php echo get_string('mobileappsheading', 'theme_essential') ?></p>
-                            <ul class="socials unstyled">
-                                <?php
-                                echo $OUTPUT->render_social_network('ios');
-                                echo $OUTPUT->render_social_network('android');
-                                echo $OUTPUT->render_social_network('winphone');
-                                echo $OUTPUT->render_social_network('windows');
-                                ?>
-                            </ul>
-                        </div>
-                    <?php
-}
-if ($hassocialnetworks || $hasmobileapps) {
-?>
-                </div>
-<?php
-}
-?>
+            <!-- Was social links, mov to footer (nadavkav) -->
             </div>
         </div>
     </div>
