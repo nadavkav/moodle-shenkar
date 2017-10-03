@@ -3,3 +3,13 @@ nav.breadcrumb-button.span3 {
     float: right;
 }
 
+/* Hack - flip content and aside blocks in RTL mode */
+aside#block-region-side-pre {
+    float: left;
+    margin-right: 2%;
+    margin-left: 0;
+}
+
+div#content {
+    float: right;
+}
