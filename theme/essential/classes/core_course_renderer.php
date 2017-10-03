@@ -27,6 +27,11 @@
 
 defined('MOODLE_INTERNAL') || die;
 
+include_once("course_filter_form.php");
+
+define ('SORTCOURSESBY_ABC', 0);
+define ('SORTCOURSESBY_LASTACCESS', 1);
+
 class theme_essential_core_course_renderer extends core_course_renderer {
     protected $enablecategoryicon;
 
@@ -37,6 +42,173 @@ class theme_essential_core_course_renderer extends core_course_renderer {
             $theme = theme_config::load('essential');
         }
         $this->enablecategoryicon = \theme_essential\toolbox::get_setting('enablecategoryicon');
+    }
+
+    /**
+     * Returns HTML to print list of courses user is enrolled to for the frontpage
+     *
+     * Also lists remote courses or remote hosts if MNET authorisation is used
+     *
+     * @return string
+     */
+    public function frontpage_my_courses() {
+        global $USER, $CFG, $DB;
+
+        if (!isloggedin() or isguestuser()) {
+            return '';
+        }
+
+        if (!empty($CFG->navsortmycoursessort)) {
+            // sort courses the same as in navigation menu
+            $sortorder = 'visible DESC,'. $CFG->navsortmycoursessort.' ASC';
+        } else {
+            $sortorder = 'visible DESC,sortorder ASC';
+        }
+        $courses  = enrol_get_my_courses('summary, summaryformat', $sortorder);
+
+        //list($categories, $childrencats, $roles, $filterbycategory, $filterbyrole, $filterbysemester, $html) = filter_courses_form();
+        list($filterbyextendedcoursename, $filterbyrole, $html) = filter_courses_form();
+
+        // Initiate semester list keys.
+        $semesterlistkeys = array('-1'=>get_string('all'));
+        foreach (explode(',',get_string('semesterlistkeys','theme_essential')) as $semesterkey) {
+            $semesterlistkeys[] = $semesterkey;
+        }
+
+        // Remove courses which are not chosen by Category / Role / Semester
+        foreach ($courses as $key => $course) {
+            $course->context = context_course::instance($course->id, MUST_EXIST);
+            if ($filterbyrole > 0 && !user_has_role_assignment($USER->id, $filterbyrole, $course->context->id)){
+                //continue;
+                unset($courses[$key]);
+            }
+//                if ($filterbycategory > 0) {
+//                    if (isset($CFG->showonlytopcategories)) {  //Show courses from his category and all children categories
+//                        if (!array_key_exists($course->category, $childrencats) && $course->category != $filterbycategory) {
+//                            //continue;   //Course id not in category or in child category
+//                            unset($courses[$key]);
+//                        }
+//                    } else {   //Show only courses in THIS category
+//                        if ($course->category != $filterbycategory) {
+//                            //continue;
+//                            unset($courses[$key]);
+//                        }
+//                    }
+//                }
+
+//                list($course_year, $course_semester ,$course_code, $course_groupcode) = explode('_', $course->idnumber.'____');
+//                if ( $filterbysemester >= 0 and $course_semester != $semesterlistkeys[$filterbysemester] ) {
+//                    unset($courses[$key]);
+//                }
+            if (!empty($filterbyextendedcoursename) &&
+                mb_strpos($course->shortname, $filterbyextendedcoursename) === false) {
+                unset($courses[$key]);
+            }
+        }
+
+        // Start of sort buttons
+        $sortcoursesby = optional_param('sortcoursesby', SORTCOURSESBY_LASTACCESS, PARAM_INT);
+        $selectedsort_abc = '';
+        $selectedsort_lastaccess = '';
+        switch ($sortcoursesby) {
+            case SORTCOURSESBY_ABC:
+                // Sort by course fullname
+                usort($courses, function($a, $b) { return strcmp($a->fullname, $b->fullname); });
+                $selectedsort_abc = 'selected';
+
+                break;
+            case SORTCOURSESBY_LASTACCESS:
+                // Sort by user's lastaccess to course
+                //usort($courses, function($a, $b) { return $a->lastaccess - $b->lastaccess; });
+
+                //default:
+                global $DB;
+                $lastaccesscourses = $DB->get_records('user_lastaccess', array('userid'=>$USER->id), 'timeaccess DESC');
+                //if ($USER->id == 5151) print_object($lastaccesscourses);
+                foreach ($lastaccesscourses as $c) {
+                    if (isset($courses[$c->courseid])) {
+                        $courses[$c->courseid]->lastaccess = $c->timeaccess;
+                    }
+                }
+                // Sort by user's lastaccess to course
+                usort($courses, function($a, $b) { return $b->lastaccess - $a->lastaccess; });
+                $selectedsort_lastaccess = 'selected';
+
+        }
+
+        //$filterbycategory = optional_param('filterByCategory', $CFG->defaultcoursecategroy, PARAM_INT);
+        //$filterbyrole = optional_param('filterByRole', -1, PARAM_INT);
+        //$filterbysemester = optional_param('filterBySemester', -1, PARAM_INT);
+        $formfilterparams = array(
+            //'filterByCategory'=>$filterbycategory,
+            'filterByRole'=> $filterbyrole,
+            //'filterBySemester'=> $filterbysemester);
+            'filterByExtendedCourseName'=> $filterbyextendedcoursename);
+        $html .= html_writer::start_div('row-fluid');
+        $sortcoursesurl = new moodle_url('/index.php?redirect=0', array_merge($formfilterparams, array('sortcoursesby' => SORTCOURSESBY_LASTACCESS)));
+        $sortcoursesurlhtml = html_writer::link($sortcoursesurl, get_string('sortbylastaccess', 'theme_essential'), array('class' => 'btn '.$selectedsort_lastaccess));
+        $html .= html_writer::tag('div', $sortcoursesurlhtml, array('class' => 'sortbylastaccess buttonz span6'));
+
+        $sortcoursesurl = new moodle_url('/index.php?redirect=0', array_merge($formfilterparams, array('sortcoursesby' => SORTCOURSESBY_ABC)));
+        $sortcoursesurlhtml = html_writer::link($sortcoursesurl, get_string('sortbyabc', 'theme_essential'), array('class' => 'btn '.$selectedsort_abc));
+        $html .= html_writer::tag('div', $sortcoursesurlhtml, array('class' => 'sortbyabc buttonz span6'));
+        $html .= html_writer::end_div();
+
+        $html .= html_writer::tag('hr', '',array('style'=>'clear:both;'));
+
+        /////////////////////////////// End of special filter code (more or less ;-)
+
+        //$output = '';
+        $output = $html;
+
+        $rhosts   = array();
+        $rcourses = array();
+        if (!empty($CFG->mnet_dispatcher_mode) && $CFG->mnet_dispatcher_mode==='strict') {
+            $rcourses = get_my_remotecourses($USER->id);
+            $rhosts   = get_my_remotehosts();
+        }
+
+        if (!empty($courses) || !empty($rcourses) || !empty($rhosts)) {
+
+            $chelper = new coursecat_helper();
+            if (count($courses) > $CFG->frontpagecourselimit) {
+                // There are more enrolled courses than we can display, display link to 'My courses'.
+                $totalcount = count($courses);
+                $courses = array_slice($courses, 0, $CFG->frontpagecourselimit, true);
+                $chelper->set_courses_display_options(array(
+                    'viewmoreurl' => new moodle_url('/my/'),
+                    'viewmoretext' => new lang_string('mycourses')
+                ));
+            } else {
+                // All enrolled courses are displayed, display link to 'All courses' if there are more courses in system.
+                $chelper->set_courses_display_options(array(
+                    'viewmoreurl' => new moodle_url('/course/index.php'),
+                    'viewmoretext' => new lang_string('fulllistofcourses')
+                ));
+                $totalcount = $DB->count_records('course') - 1;
+            }
+            $chelper->set_show_courses(self::COURSECAT_SHOW_COURSES_EXPANDED)->
+            set_attributes(array('class' => 'frontpage-course-list-enrolled'));
+            $output .= $this->coursecat_courses($chelper, $courses, $totalcount);
+
+            // MNET
+            if (!empty($rcourses)) {
+                // at the IDP, we know of all the remote courses
+                $output .= html_writer::start_tag('div', array('class' => 'courses'));
+                foreach ($rcourses as $course) {
+                    $output .= $this->frontpage_remote_course($course);
+                }
+                $output .= html_writer::end_tag('div'); // .courses
+            } elseif (!empty($rhosts)) {
+                // non-IDP, we know of all the remote servers, but not courses
+                $output .= html_writer::start_tag('div', array('class' => 'courses'));
+                foreach ($rhosts as $host) {
+                    $output .= $this->frontpage_remote_host($host);
+                }
+                $output .= html_writer::end_tag('div'); // .courses
+            }
+        }
+        return $output;
     }
 
     /**
