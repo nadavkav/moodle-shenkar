@@ -1,0 +1,5 @@
+/* Fix breadcrumb nav in RTL mode */
+nav.breadcrumb-button.span3 {
+    float: right;
+}
+
