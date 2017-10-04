@@ -11,6 +11,26 @@ function print_err($target, $error, $module = null) {
 	echo $target->box_end ();
 }
 
+function log_error($target, $username, $course, $reason) {
+	$event = \local_ws_rashim\event\user_login_failed::create ( array (
+			'userid' => - 1,
+			'other' => array (
+					'username' => $username,
+					'reason' => $reason 
+			) 
+	) );
+	
+	$event->trigger ();
+	
+	echo $target->box_start ( 'loginpanel' );
+	echo '<br /><span>Details: ' . $reason . ' (' . $username;
+	if ($course != '') {
+		echo ', ' . $course;
+	}
+	echo ')</span>';
+	echo $target->box_end ();
+}
+
 global $CFG;
 global $DB;
 
@@ -43,59 +63,71 @@ $conditions = array (
 if (! $login_user = $DB->get_record ( 'user', $conditions )) {
 	echo $OUTPUT->header ();
 	print_err ( $OUTPUT, 'invalidlogin' );
+	log_error ( $OUTPUT, $user, null, 'user not found' );
 	echo $OUTPUT->footer ();
 	die ();
 }
 
-// we do not use this function in the first place
-// because the functon creates the user if does not exists!
-$login_user = authenticate_user_login ( $user, $psw );
-
-if (($login_user === false) || ($login_user && $login_user->id == 0)) {
-	echo $OUTPUT->header ();
-	print_err ( $OUTPUT, 'invalidlogin' );
-	echo $OUTPUT->footer ();
-	die ();
-} else {
-	complete_user_login ( $login_user );
-	
-	$url = "$CFG->httpswwwroot/login/index.php";
-	
+if (isset ( $config->michlol_login ) && $config->michlol_login) {
 	if ($course != '') {
-		if (isset ( $config->michlol_useid ) && $config->michlol_useid) {
-			$conditions = array (
-					"id" => $course 
-			);
-		} else {
-			$conditions = array (
-					"idnumber" => $course 
-			);
-		}
+		redirect ( "$CFG->httpswwwroot/course/view.php?idnumber={$course}" );
+	} else {
+		redirect ( "$CFG->httpswwwroot/login/index.php" );
+	}
+} else {
+	// we do not use this function in the first place
+	// because the functon creates the user if does not exists!
+	$login_user = authenticate_user_login ( $user, $psw );
+	
+	if (($login_user === false) || ($login_user && $login_user->id == 0)) {
+		echo $OUTPUT->header ();
+		print_err ( $OUTPUT, 'invalidlogin' );
+		log_error ( $OUTPUT, $user, null, 'unable to authenticate' );
+		echo $OUTPUT->footer ();
+		die ();
+	} else {
+		complete_user_login ( $login_user );
 		
-		if (isset ( $resource_type ) && ! empty ( $resource_type )) {
-			$url = "$CFG->httpswwwroot/mod/{$resource_type}/view.php?id={$resource_id}";
-		} else {
-			if (! $courseget = $DB->get_record ( 'course', $conditions )) {
-				echo $OUTPUT->header ();
-				print_err ( $OUTPUT, 'invalidlogin' );
-				echo $OUTPUT->footer ();
-				die ();
+		$url = "$CFG->httpswwwroot/login/index.php";
+		
+		if ($course != '') {
+			if (isset ( $config->michlol_useid ) && $config->michlol_useid) {
+				$conditions = array (
+						"id" => $course 
+				);
 			} else {
 				$conditions = array (
-						"krs" => $mfgs_krs,
-						"mfgs" => $mfgs_sid,
-						"course_id" => $courseget->id 
+						"idnumber" => $course 
 				);
-				
-				if (! $meetings = $DB->get_record ( 'meetings', $conditions )) {
-					$url = "$CFG->httpswwwroot/course/view.php?id={$courseget->id}";
+			}
+			
+			if (isset ( $resource_type ) && ! empty ( $resource_type )) {
+				$url = "$CFG->httpswwwroot/mod/{$resource_type}/view.php?id={$resource_id}";
+			} else {
+				if (! $courseget = $DB->get_record ( 'course', $conditions )) {
+					echo $OUTPUT->header ();
+					print_err ( $OUTPUT, 'invalidlogin' );
+					log_error ( $OUTPUT, $user, $course, 'course not found' );
+					echo $OUTPUT->footer ();
+					die ();
 				} else {
-					$url = "$CFG->httpswwwroot/course/view.php?id={$courseget->id}&section={$meetings->section_num}";
+					$conditions = array (
+							"krs" => $mfgs_krs,
+							"mfgs" => $mfgs_sid,
+							"course_id" => $courseget->id 
+					);
+					
+					if (! $meetings = $DB->get_record ( 'meetings', $conditions )) {
+						$url = "$CFG->httpswwwroot/course/view.php?id={$courseget->id}";
+					} else {
+						$url = "$CFG->httpswwwroot/course/view.php?id={$courseget->id}&section={$meetings->section_num}";
+					}
 				}
 			}
 		}
 	}
 }
+
 echo $OUTPUT->header ();
 ?>
 	<form id="formLogin" name="formLogin" method="post"

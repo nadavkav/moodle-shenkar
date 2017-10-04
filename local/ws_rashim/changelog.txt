@@ -83,4 +83,21 @@ CHANGES
 VERSION	3.1.0.41 - 2017040400.1625
 CHANGES
 	* Rashat - Login directly to resource in knowledge tree...
-		
+--------------------------------------------------------------------------------
+VERSION	3.1.0.43 - 2017051700.1055
+CHANGES
+	* Login from Michlol - enable without authentication...
+	* Set maturity to STABLE
+--------------------------------------------------------------------------------
+VERSION	3.1.0.45 - 2017060700.0915
+CHANGES
+	* Add option to set enrolment start and end times...
+--------------------------------------------------------------------------------
+VERSION	3.1.0.47 - 2017072600.1145
+CHANGES
+	* Add more details (reason of failure) for loginf page, when comming from Michlol, including record in the log...
+--------------------------------------------------------------------------------
+VERSION	3.1.0.49 - 2017080700.1015
+CHANGES
+	* Fit code to work with PHP 7.1 too
+	

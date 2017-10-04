@@ -177,7 +177,7 @@ class server {
 		$event->trigger ();
 	}
 
-	protected function user_enroll($course, $user, $role) {
+	protected function user_enroll($course, $user, $role, $role_start = 0, $role_end = 0) {
 		$auth = 'manual';
 		
 		$manualenrol = enrol_get_plugin ( $auth );
@@ -186,7 +186,7 @@ class server {
 				'status' => ENROL_INSTANCE_ENABLED,
 				'enrol' => $auth 
 		), '*', MUST_EXIST );
-		$manualenrol->enrol_user ( $enrolinstance, $user, $role );
+		$manualenrol->enrol_user ( $enrolinstance, $user, $role, $role_start, $role_end );
 		
 		$event = \local_ws_rashim\event\user_enrolment_created::create ( array (
 				'userid' => $this->admin->id,
@@ -306,13 +306,18 @@ class server {
 			return $this->error ( 5035 );
 		}
 		
-		$section->name = $section_name;
-		$section->visible = $visible;
-		
 		// pre 3.1 hack
 		if (function_exists ( 'course_update_section' )) {
-			course_update_section ( $course_id, $section );
+			$new = array (
+					'name' => $section_name,
+					'visible' => $visible
+			);
+			
+			course_update_section ( $course_id, $section, $new );
 		} else {
+			$section->name = $section_name;
+			$section->visible = $visible;
+				
 			$this->DB->update_record ( 'course_sections', $section );
 			rebuild_course_cache ( $course_id, true );
 		}
@@ -1232,7 +1237,7 @@ class server {
 		}
 	}
 
-	public function user_add($admin_name, $admin_psw, $session_key, $user_id, $user_name, $user_psw, $user_firstname, $user_lastname, $user_email, $user_phone1, $user_phone2, $user_address, $user_lang, $user_extra, $course_id, $course_role, $group_id, $group_name) {
+	public function user_add($admin_name, $admin_psw, $session_key, $user_id, $user_name, $user_psw, $user_firstname, $user_lastname, $user_email, $user_phone1, $user_phone2, $user_address, $user_lang, $user_extra, $course_id, $course_role, $group_id, $group_name, $role_start, $role_end) {
 		if ($this->valid_login ( $session_key, $admin_name, $admin_psw )) {
 			$user = $this->add_user ( $user_id, $user_name, $user_psw, $user_firstname, $user_lastname, $user_email, $user_phone1, $user_phone2, $user_address, $user_lang, $user_extra );
 			
@@ -1250,7 +1255,7 @@ class server {
 						return $this->error ( 5043 );
 					}
 					
-					$this->user_enroll ( $course->id, $user->id, $role->id );
+					$this->user_enroll ( $course->id, $user->id, $role->id, $role_start, $role_end );
 				}
 				
 				if (isset ( $group_id ) && isset ( $group_name )) {
@@ -1519,7 +1524,7 @@ class server {
 			
 			if ($xml) {
 				$conditions = array (
-						'idnumber' => $course->idnumber 
+						'idnumber' => "{$xml->DATA->SNL}_{$xml->DATA->SHL}_{$xml->DATA->MIS}" 
 				);
 				if ($course = $this->DB->get_record ( 'course', $conditions )) {
 					$course->fullname = ( string ) $xml->DATA->SHM;

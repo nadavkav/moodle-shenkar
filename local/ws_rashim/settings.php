@@ -37,6 +37,10 @@ if ($hassiteconfig) {
 	$settings->add ( new admin_setting_configtext ( 'local_ws_rashim/api_user', get_string ( 'michloluser', 'local_ws_rashim' ), NULL, NULL ) );
 	
 	$settings->add ( new admin_setting_configpasswordunmask ( 'local_ws_rashim/api_psw', get_string ( 'michlolpsw', 'local_ws_rashim' ), NULL, NULL ) );
+
+	$settings->add ( new admin_setting_heading ( 'local_ws_rashim/michlol_login_header', '<h2>' . get_string ( 'michlol_login_header', 'local_ws_rashim' ) . '</h2>', '' ) );
+	
+	$settings->add ( new admin_setting_configcheckbox ( 'local_ws_rashim/michlol_login', get_string ( 'michlol_login', 'local_ws_rashim' ), null, 0 ) );
 	
 	$settings->add ( new admin_setting_heading ( 'local_ws_rashim/michlol_obsolate', '<h2>' . get_string ( 'michlol_obsolate', 'local_ws_rashim' ) . '</h2>', '' ) );
 	

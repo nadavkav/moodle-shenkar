@@ -43,6 +43,8 @@
 		<part name="Course_Role" type="xsd:string" />
 		<part name="Group_ID" type="xsd:string" />
 		<part name="Group_Name" type="xsd:string" />
+		<part name="Role_Start" type="xsd:string" />
+		<part name="Role_End" type="xsd:string" />
 	</message>
 
 	<message name="User_AddResponse">

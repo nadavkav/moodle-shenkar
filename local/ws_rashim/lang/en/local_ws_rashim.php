@@ -15,6 +15,9 @@ $string ['michlol_course_visible'] = 'Default state of course created from Michl
 $string ['def_city'] = 'Default city for user created from Michlol';
 $string ['def_country'] = 'Default country for user created from Michlol';
 
+$string ['michlol_login_header'] = 'Settings for login from Michlol';
+$string ['michlol_login'] = 'Enable access without authentication';
+
 $string ['michlol_api'] = 'Settings for Michlol API';
 $string ['michlolurl'] = 'URL to Michlol API';
 $string ['michloluser'] = 'User name';

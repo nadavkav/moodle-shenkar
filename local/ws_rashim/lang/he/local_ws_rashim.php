@@ -15,6 +15,9 @@ $string ['michlol_course_visible'] = 'סטטוס ברירת מחדל עבור ק
 $string ['def_city'] = 'עיר ברירת מחדל עבור משתמש הנוצר ממכלול';
 $string ['def_country'] = 'ארץ ברירת מחדל עבור משתמש הנוצר ממכלול';
 
+$string ['michlol_login_header'] = 'הגדרות כניסה ממכלול';
+$string ['michlol_login'] = 'אפשר כניסה ללא אימות נוסף';
+
 $string ['michlol_api'] = 'הגדרות עבור API של מכלול';
 $string ['michlolurl'] = 'כתובת';
 $string ['michloluser'] = 'משתמש';
